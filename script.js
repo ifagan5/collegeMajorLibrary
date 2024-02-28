@@ -2,10 +2,11 @@ var url = "https://raw.githubusercontent.com/b-mcavoy/datasets/main/Economics/Co
 
 var majorCategories = getColumn(url, 6);
 var majors = getColumn(url, 2);
-var shareWomen = getColumn(url,6);
+var shareWomen = getColumn(url,7);
 var unemploymentRates = getColumn(url, 10);
 var totalStudents = getColumn(url, 3);
-/*DOCUMENTATION:
+
+/*DOCUMENTATION: 
 Take a desired major category as a parameter and returns a list of majors in 
 that category.
 category -- (String) desried major category
@@ -14,10 +15,13 @@ return - (List) all majors within that major category
 function getMajors(category) {
     var matches = [];
     for (var i = 0; i < majors.length; i++){
-        if(majorCategories[i] = category) {
+        if(majorCategories[i].toLowerCase().includes(category.toLowerCase())) {
             matches.push(majors[i]);
         }
     }
+    if (matches.length == 0) {
+        matches.push("That major category does not exist!")
+      }
 return matches;
 }
 
@@ -29,18 +33,20 @@ category -- (String) desired major category
 return -- (String) the name of the major with the highest umemployment rate
 */
 function highestUnemployment(category) {
-    var highest = 0.0;
+    var highest = 0.000;
     var highestIndex = -1;
-
     for (var i = 0; i < majorCategories.length; i++) {
-        if (majorCategories[i] = category) {
+        if (majorCategories[i].toLowerCase().includes(category.toLowerCase())) {
             if (unemploymentRates[i] > highest) {
                 highest = unemploymentRates[i];
-                highestIndex = i
+                highestIndex = i;
             }
         }
     }
-    return majors[highestIndex];
+    if (highestIndex == -1) {
+        return "That major category doesn't exist!"
+    }
+    return majors[highestIndex]; 
 }
 
 
@@ -55,7 +61,7 @@ function mostPopular(category) {
     var students = 0;
     var popularIndex = -1;
     for (var i = 0; i < majors.length; i++){
-        if(majorCategories[i] = category) {
+        if(majorCategories[i].toLowerCase().includes(category.toLowerCase())) {
             if (totalStudents[i] > students) {
                 students = totalStudents[i];
                 popularIndex = i;
@@ -63,8 +69,12 @@ function mostPopular(category) {
         }
 
 }
+if (popularIndex == -1) {
+    return "That major category doesn't exist!"
+}
 return majors[popularIndex]
 }
+
 
 /*DOCUMENTATION:
 Takes the desired major category as a parameter and returns a list of all
@@ -76,14 +86,18 @@ in that library
 function femaleDominated(category) {
     var matches = [];
     for (var i = 0; i < majorCategories.length; i++){
-        if (majorCategories[i] = category) {
+        if (majorCategories[i].toLowerCase().includes(category.toLowerCase())) {
             if (shareWomen[i] > 0.5){
                 matches.push(majors[i])
             }
         }
     }
+    if (matches.length == 0) {
+        matches.push("That major category does not exist!")
+      }
 return matches;
 }
+
 
 
 /*DOCUMENTATION:
@@ -95,12 +109,19 @@ return -- (String) whether the major is female or male dominated
 function dominantGender(majorName) {
     var maleOrFemale = "";
     for (var i = 0; i < majorCategories.length; i++){
-        if (majorName = majors[i] && shareWomen[i] > 0.5){
-            maleOrFemale = "This major is female dominated!"
-        }
-        if (majorName = majors[i] && shareWomen[i] < 0.5){
-            maleOrFemale = "This major is male dominated!"
+        if (majors[i].toLowerCase().includes(majorName.toLowerCase())) {
+            if (shareWomen[i] > 0.5) {
+                maleOrFemale = "This major is female dominated!"
+                return maleOrFemale
+            }
+            if (shareWomen[i] < 0.5) {
+                maleOrFemale = "This major is male dominated!"
+                return maleOrFemale
+            }
         }
     }
-return maleOrFemale;
+if (maleOrFemale = "") {
+    return "That Major doesn't"
 }
+}
+console.log(dominantGender("Aerospace"));   
