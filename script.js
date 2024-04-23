@@ -124,4 +124,27 @@ if (maleOrFemale = "") {
     return "That Major doesn't"
 }
 }
-console.log(dominantGender("Aerospace"));   
+console.log(dominantGender("Aerospace")); 
+
+function rightClick(){
+ 
+   if(index < finalMatches.length - 1) {
+   index++;
+  
+   }
+  
+   document.getElementById("num").innerHTML = index +1;
+  
+   updateScreen();
+ }
+
+function leftClick(){
+
+   if(index > 0){
+   index--;
+   }
+  
+   document.getElementById("num").innerHTML = index +1;
+  
+   updateScreen();
+ }
